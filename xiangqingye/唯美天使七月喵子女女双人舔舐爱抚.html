@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>详情</title>
+    <link rel="stylesheet" href="styles1.css">
+    <style>
+        /* 遮罩层，覆盖整个页面 */
+        #ad-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            /* 半透明背景 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            display: none;
+            /* 初始状态隐藏 */
+        }
+
+        /* 弹出广告框 */
+        #ad-box {
+            position: relative;
+            background-color: white;
+            padding: 10px;
+            border-radius: 10px;
+            max-width: 300px;
+            /* 限制最大宽度为90% */
+            max-height: 600px;
+            /* 限制最大高度为90% */
+            overflow: hidden;
+            /* 超出部分隐藏 */
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 广告图片 */
+        #ad-box img {
+            width: 100%;
+            /* 图片宽度占满弹窗 */
+            height: auto;
+            /* 高度自适应，保持比例 */
+            border-radius: 10px;
+        }
+
+        /* 右上角的关闭按钮 */
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .close-btn:hover {
+            background-color: darkred;
+        }
+
+        /* 控制左右切换按钮 */
+        .ad-navigation {
+            display: flex;
+            justify-content: space-between;
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            transform: translateY(-50%);
+        }
+
+        .ad-navigation button {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .ad-navigation button:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>LANGNVBA</h1>
+        <div class="main-image">
+            <img id="mainImage" src="" alt="主图">
+        </div>
+
+        <!-- 广告容器，水平排列的广告轮播 -->
+        <div class="ad-container">
+            <!-- 第一个广告区域 -->
+            <div class="ad-item">
+                <div class="ad-slideshow" id="adSlideshow1">
+                    <a href="../meituxiangqing/meituxiangqing.html" target="_blank">
+                        <img src="../image/性感模特夏西貌美大长腿很迷人/2.jpg" class="active" alt="广告1-1">
+                    </a>
+                    <a href="../meituxiangqing/meituxiangqing.html" target="_blank">
+                        <img src="../image/宅男女神晓鱼酱情趣内衣美艳四射/3.jpg" alt="广告1-2">
+                    </a>
+                    <a href="../meituxiangqing/meituxiangqing.html" target="_blank">
+                        <img src="../image/私房鼻祖王雨纯秀巨乳好身材看得见/4.jpg" alt="广告1-3">
+                    </a>
+                </div>
+            </div>
+            <!-- 第二个广告区域 -->
+            <div class="ad-item">
+                <div class="ad-slideshow" id="adSlideshow2">
+                    <a href="../meituxiangqing/meituxiangqing.html" target="_blank">
+                        <img src="../image/天然呆萌小妹麻花酱身材好很诱人/7.jpg" class="active" alt="广告2-1">
+                    </a>
+                    <a href="../meituxiangqing/meituxiangqing.html" target="_blank">
+                        <img src="../image/越南学生妹Azami火爆身材非常惊艳/1.jpg" alt="广告2-2">
+                    </a>
+                    <a href="../meituxiangqing/meituxiangqing.html" target="_blank">
+                        <img src="../image/抹油少女七月喵子情趣束缚大尺度/4.jpg" alt="广告2-3">
+                    </a>
+                </div>
+            </div>
+            <!-- 第三个广告区域 -->
+            <div class="ad-item">
+                <div class="ad-slideshow" id="adSlideshow3">
+                    <a href="../meituxiangqing/meituxiangqing.html" target="_blank">
+                        <img src="../image/人形奶牛周大萌白皙胴体美乳侧漏/3.jpg" class="active" alt="广告3-1">
+                    </a>
+                    <a href="../meituxiangqing/meituxiangqing.html" target="_blank">
+                        <img src="../image/性感美女豆瓣酱火辣身材任君摆布/4.jpg" alt="广告3-2">
+                    </a>
+                    <a href="../meituxiangqing/meituxiangqing.html" target="_blank">
+                        <img src="../image/迷情圣诞米线线情趣死库水大秀蜜臀/2.jpg" alt="广告3-3">
+                    </a>
+                </div>
+            </div>
+            <div class="ad-item">
+                <div class="ad-slideshow" id="adSlideshow4">
+                    <a href="../meituxiangqing/meituxiangqing.html" target="_blank">
+                        <img src="../image/巨乳嫩模糯美子丰腴胴体白皙可口/2.jpg" class="active" alt="广告3-1">
+                    </a>
+                    <a href="../meituxiangqing/meituxiangqing.html" target="_blank">
+                        <img src="../image/韩国性感萌妹子孙乐乐湿身艺术写真/3.jpg" alt="广告3-2">
+                    </a>
+                    <a href="../meituxiangqing/meituxiangqing.html" target="_blank">
+                        <img src="../image/韩国女神Zenny紧身死库水室外裸身/3.jpg" alt="广告3-3">
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="ad-description">
+            <p> 非会员用户请下载套图，会员用户请下载后查看完整套图！</p>
+            <p>部分预览图仅供参考，请以下载为准！</p>
+            <p>价格：20/套</p>
+            <p>数量：1000套</p>
+
+            <!-- 用自定义列表格展示商品信息 -->
+            <ul class="info-list">
+                <li>
+                    <span class="info-label">图片编号：</span>
+                    <span class="info-value">20210715001</span>
+                </li>
+                <li>
+                    <span class="info-label">图片类别：</span>
+                    <span class="info-value">美图</span>
+                </li>
+                <li>
+                    <span class="info-label">图片价格：</span>
+                    <span class="info-value">￥20/套</span>
+                </li>
+            </ul>
+
+        </div>
+
+        <div class="image-container" id="image-container"></div>
+
+        <div class="ad-description">
+            <p>会员说明：</p>
+
+            <!-- 自定义列表格展示会员权益 -->
+            <ul class="info-list">
+                <li>会员名称：&nbsp;&nbsp;价格优惠&nbsp;&nbsp;&nbsp;下载次数</li>
+                <li>钻石会员：&nbsp;&nbsp;199.9元/月&nbsp;&nbsp;无限制</li>
+                <li>白银会员：&nbsp;&nbsp;59.9元/月&nbsp;&nbsp;&nbsp;30次</li>
+                <li>黄金会员：&nbsp;&nbsp;39.9元/月&nbsp;&nbsp;&nbsp;15次</li>
+            </ul>
+
+        </div>
+
+        <div>
+            <a href="" class="yanse">下载完整套图</a>&nbsp;&nbsp;
+            <a href="下载教程.html" class="yanse">下载教程</a>&nbsp;&nbsp;
+            <a href="https://qm.qq.com/q/IekbXKmPAG">提取码联系客服获取</a>
+        </div>
+        <p class="yanse">如果客服链接失效，请看主页公告获取最新客服链接！</p>
+
+        <div class="password-container" id="password-container">
+            <div class="password-section">
+                <input type="password" id="passwordInput" placeholder="请勿输入，直接点击下载！" />
+                <button onclick="checkPassword()">确认</button>
+                <a href="https://qm.qq.com/q/IekbXKmPAG" id="contactButton" class="contact-btn" target="_blank">获取密码</a>
+            </div>
+            <div id="passwordMessage"></div>
+        </div>
+    </div>
+
+    <!-- 广告弹窗 -->
+    <div id="ad-overlay">
+        <div id="ad-box">
+            <button class="close-btn" onclick="closeAd()">×</button>
+            <img id="ad-image" src="" alt="广告图片">
+            <div class="ad-navigation">
+                <button onclick="prevAd()">‹</button>
+                <button onclick="nextAd()">›</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const imageFolderPath = '../image/唯美天使七月喵子女女双人舔舐爱抚/';
+        const totalImages = 41;
+        const password = "ab2658"; // 设置你想要的密码
+        let imageCountLoading = 0;
+
+        // 定义弹出广告图片数组
+        const popupAdImages = [
+            '../image/性感模特夏西貌美大长腿很迷人/2.jpg',
+            '../image/宅男女神晓鱼酱情趣内衣美艳四射/3.jpg',
+            '../image/私房鼻祖王雨纯秀巨乳好身材看得见/4.jpg'
+        ];
+        let currentAdIndex = 0; // 当前显示的广告索引
+
+        window.onload = function () {
+            renderImages();
+            startSlideshow('adSlideshow1'); // 启动第一个广告轮播
+            startSlideshow('adSlideshow2'); // 启动第一个广告轮播
+            startSlideshow('adSlideshow3'); // 启动第一个广告轮播
+            startSlideshow('adSlideshow4'); // 启动第一个广告轮播
+            showAd(); // 初始化显示广告弹窗
+        };
+
+        function renderImages() {
+            const mainImage = document.getElementById('mainImage');
+            const imageContainer = document.getElementById('image-container');
+
+            mainImage.src = `${imageFolderPath}1.jpg`;
+            imageContainer.innerHTML = '';
+
+            // 加载前8张描述图
+            for (let i = 0; i < 6; i++) { // 从0到7，共8张
+                const imgElement = document.createElement('div');
+                imgElement.className = 'image-item';
+                imgElement.innerHTML = `<img src="${imageFolderPath}${i + 2}.jpg" alt="商品描述图 ${i + 2}" onload="checkImageCount()">`;
+                imageContainer.appendChild(imgElement);
+            }
+        }
+
+        function checkImageCount() {
+            imageCountLoading++;
+            if (imageCountLoading === 7) {
+                document.getElementById('passwordMessage').innerText = '请输入密码以查看更多图片';
+            }
+        }
+
+        function renderRemainingImages() {
+            const imageContainer = document.getElementById('image-container');
+            for (let i = 7; i < totalImages; i++) { // 从第9张开始加载
+                const imgElement = document.createElement('div');
+                imgElement.className = 'image-item';
+                imgElement.innerHTML = `<img src="${imageFolderPath}${i + 1}.jpg" alt="商品描述图 ${i + 1}">`;
+                imageContainer.appendChild(imgElement);
+            }
+        }
+
+        function checkPassword() {
+            const input = document.getElementById('passwordInput').value;
+            if (input === password) {
+                // 如果密码正确，继续显示后续图片，且隐藏输入框和客服按钮
+                renderRemainingImages();
+                document.getElementById('password-container').style.display = 'none'; // 隐藏密码输入框
+                document.getElementById('passwordMessage').innerText = ''; // 清除提示信息
+                document.getElementById('contactButton').style.display = 'none'; // 隐藏联系客服按钮
+            } else {
+                document.getElementById('passwordMessage').innerText = '密码错误，请重试！';
+            }
+        }
+
+        function showAd() {
+            updateAdImage(); // 初始化显示第一张广告
+            document.getElementById('ad-overlay').style.display = 'flex'; // 显示弹窗
+        }
+
+        // 更新广告图片
+        function updateAdImage() {
+            const adImage = document.getElementById('ad-image');
+            adImage.src = popupAdImages[currentAdIndex]; // 从数组中调用图片
+        }
+
+        // 显示下一张广告
+        function nextAd() {
+            currentAdIndex = (currentAdIndex + 1) % popupAdImages.length; // 循环到下一张
+            updateAdImage();
+        }
+
+        // 显示上一张广告
+        function prevAd() {
+            currentAdIndex = (currentAdIndex - 1 + popupAdImages.length) % popupAdImages.length; // 循环到上一张
+            updateAdImage();
+        }
+
+        // 关闭广告弹窗
+        function closeAd() {
+            document.getElementById('ad-overlay').style.display = 'none'; // 隐藏弹窗
+        }
+
+        function startSlideshow(slideshowId) {
+            const slideshow = document.getElementById(slideshowId);
+            const images = slideshow.getElementsByTagName('img');
+            let index = 0;
+
+            function showNextImage() {
+                images[index].classList.remove('active');
+                index = (index + 1) % images.length;
+                images[index].classList.add('active');
+            }
+
+            // 自动轮播广告，每5秒切换一次
+            setInterval(nextAd, 1000);
+            setInterval(showNextImage, 3000); // 每3秒切换一次图片
+
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LIANG NV BA</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* 简单的CSS样式，调整标签的样式 */
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            /* 允许换行 */
+            justify-content: flex-start;
+            overflow: hidden;
+            /* 隐藏超出部分 */
+            animation: slideIn 6s forwards;
+            /* 整体滑入动画 */
+        }
+
+        .card {
+            border: 10px solid #ccc;
+            margin: 10px;
+            padding: 10px;
+            text-align: center;
+            opacity: 1;
+            /* 初始不透明度 */
+            animation: fadeIn 0.5s forwards;
+            /* 渐显动画 */
+            width: calc(25% - 20px);
+            /* 每行四列，减去左右margin */
+            box-sizing: border-box;
+            /* 确保padding和border不影响总宽度 */
+        }
+
+        .card img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* 限制标题为两行，超出隐藏 */
+        .title {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            /* 限制为两行 */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            /* 如果超出则显示省略号 */
+            margin: 0;
+            /* 清除默认margin */
+            font-size: 12px;
+            /* 可根据需要调整字体大小 */
+        }
+
+        .card p {
+            margin: 5px 0 0 0;
+            /* 为价格元素添加一些间距 */
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                /* 初始位置在右侧 */
+            }
+
+            to {
+                transform: translateX(0);
+                /* 移动到原位 */
+            }
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                /* 最终不透明度 */
+            }
+        }
+
+        @keyframes continuousZoom {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+                /* 放大5% */
+            }
+        }
+
+        /* 媒体查询：屏幕宽度小于768px时，设置每行显示2列 */
+        @media (max-width: 768px) {
+            .card {
+                width: calc(50% - 20px);
+                /* 每行两列，减去左右margin */
+            }
+        }
+
+        .tag-filter {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .tag-button {
+            padding: 10px 15px;
+            margin: 0 5px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .tag-button:hover {
+            background-color: #471818;
+        }
+
+        .tag-button.active {
+            background-color: #1f81ea;
+            color: white;
+        }
+
+        /* 广告横条样式 */
+        .ad-banner {
+            width: 100%;
+            height: 160px;
+            /* 设置广告栏的固定高度 */
+            background-color: #f0f0f0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+            /* 顶部间距 */
+            position: relative;
+        }
+
+        /* 广告图片轮播容器 */
+        .ad-slideshow {
+            display: flex;
+            width: 100%;
+            justify-content: space-around;
+        }
+
+        /* 广告图片的样式 */
+        .ad-slideshow img {
+            width: 100%;
+            /* 确保每张图片占据广告栏的30%宽度 */
+            height: 100%;
+            /* 图片高度充满广告栏的高度 */
+            object-fit: contain;
+            /* 图片按比例缩放，保持完整，不裁剪 */
+        }
+
+        /* 链接样式，确保点击整个图片区域 */
+        .ad-slideshow a {
+            display: block;
+            width: 30%;
+            height: 100%;
+        }
+
+        .ad-description {
+            text-align: center;
+            /* 广告描述文字居中 */
+            font-size: 18px;
+            /* 字体大小 */
+            color: #323232;
+            /* 字体颜色 */
+            margin-top: 10px;
+            /* 顶部间距 */
+            padding: 5px;
+            /* 内边距 */
+            background-color: #f97dd8;
+
+            width: 100%;
+        }
+
+        #searchInput {
+            width: 300px;
+            /* 设置搜索框宽度 */
+            padding: 10px;
+            /* 内边距 */
+            border: 1px solid #ccc;
+            /* 边框样式 */
+            border-radius: 4px;
+            /* 圆角边框 */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            /* 阴影效果 */
+            margin-bottom: 20px;
+            /* 搜索框下面的间距 */
+        }
+
+        #result {
+            background-color: white;
+            /* 设置背景为白色 */
+            border: 1px solid #ccc;
+            /* 边框样式 */
+            padding: 10px;
+            /* 内边距 */
+            max-width: 400px;
+            /* 设置最大宽度为400px */
+            width: 100%;
+            /* 让宽度占满父元素，直到最大宽度 */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            /* 添加阴影效果 */
+        }
+
+        #result div {
+            padding: 5px;
+            /* 每个结果的内边距 */
+            border-bottom: 1px solid #eee;
+            /* 分隔线 */
+        }
+
+        #result div:last-child {
+            border-bottom: none;
+            /* 最后一个结果去掉分隔线 */
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* 使内容居中 */
+            margin: 0;
+            /* 清除默认边距 */
+            padding: 1px;
+            /* 为页面添加内边距 */
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html">首页</a></li>
+                <li><a href="meituxiangqing/meituxiangqing.html">美图</a></li>
+                <li><a href="shipinxiangqing/shipinxiangqing.html">AV</a></li>
+                <li><a href="抽奖/抽奖.html">抽奖</a></li>
+                <li><a href="抽奖/抽奖.html">会员</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="announcement-container" id="announcement-container">
+        <div class="announcement" id="announcement">
+            <p>公告1：欢迎访问LANGNVBANG，这里是最新的时尚模特广告展示平台！</p>
+            <p>公告2：more ads coming soon!</p>
+        </div>
+    </div>
+
+    <!-- 广告横条，包含动态显示的图片 -->
+    <div class="ad-banner" id="ad-banner">
+        <div class="ad-slideshow" id="ad-slideshow">
+            <!-- 广告图片将通过JavaScript动态插入 -->
+        </div>
+    </div>
+
+    <input type="text" id="searchInput" placeholder="请输入搜索关键字" onkeyup="searchLinks()">
+    <div id="result"></div>
+    <!-- 添加独立的文本描述 -->
+    <p class="ad-description">此页面展示了最新的时尚模特广告，快来发现更多惊喜！</p>
+
+    <div class="tag-filter">
+        <button class="tag-button" data-tag="all">所有</button>
+        <button class="tag-button" data-tag="PC">PC </button>
+        <button class="tag-button" data-tag="安卓">安卓</button>
+        <button class="tag-button" data-tag="RPG">RPG</button>
+
+    </div>
+
+    <main>
+        <div class="card-container" id="image-gallery">
+            <!-- 动态生成的卡片将放在这里 -->
+        </div>
+        <div class="pagination" id="pagination">
+            <button id="prev">上一页</button>
+            <button id="next">下一页</button>
+        </div>
+    </main>
+
+    <footer>
+
+        <p>@公司名称 | TX有限公司<br>电话：010-82971111<br>网址：www.txkuozhanban.com<br>客服热线：400-800-8888</p>
+        <p>地址：北京市海淀区西二旗路10号北京邮电大学西门</p>
+
+
+        <a href="#">用户协议</a> | <a href="#">隐私政策</a>
+
+    </footer>
+
+    <script>
+        const imageFolderPath = 'image/fengmian/';
+        let totalImages = 200; // 总图片数
+        const imagesPerPage = 20; // 每页显示20张图片
+        let currentPage = 1;
+
+        // 获取图片画廊的容器
+        const imageGallery = document.getElementById('image-gallery');
+
+        // 获取分页按钮
+        const prevButton = document.getElementById('prev');
+        const nextButton = document.getElementById('next');
+
+        function updateButtons() {
+            prevButton.disabled = currentPage === 1;
+            nextButton.disabled = currentPage * imagesPerPage >= totalImages;
+        }
+
+        prevButton.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                loadImages();
+                updateButtons();
+            }
+        });
+
+        nextButton.addEventListener('click', () => {
+            if (currentPage * imagesPerPage < totalImages) {
+                currentPage++;
+                loadImages();
+                updateButtons();
+            }
+        });
+
+        // 假设这是每张图片对应的价格数组
+        const links = [
+
+
+            { link: 'xiangqingye/宅男女神晓鱼酱情趣内衣美艳四射.html', price: '2024.10.11', tag: '情趣' },
+            { link: 'xiangqingye/私房鼻祖王雨纯秀巨乳好身材看得见.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye/模特朱可儿蕾丝情趣性感美胸跑出来.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/性感模特夏西貌美大长腿很迷人.html', price: '2024.10.11', tag: '性感' },
+
+            { link: 'xiangqingye/天然呆萌小妹麻花酱身材好很诱人.html', price: '2024.10.11', tag: '情趣' },
+            { link: 'xiangqingye/性感美女豆瓣酱火辣身材任君摆布.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye/韩国性感萌妹子孙乐乐湿身艺术写真.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/越南学生妹Azami火爆身材非常惊艳.html', price: '2024.10.11', tag: '性感' },
+
+            { link: 'xiangqingye/模特绯月樱真空激凸香艳诱人.html', price: '2024.10.11', tag: '情趣' },
+            { link: 'xiangqingye/韩国美女Sonson黑丝翘臀让人目不转晴.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye/巨乳嫩模糯美子丰腴胴体白皙可口.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/被捕叛忍阿寨寨惨遭捆绑抹油调教.html', price: '2024.10.11', tag: '性感' },
+
+            { link: 'xiangqingye/韩国女神Zenny紧身死库水室外裸身.html', price: '2024.10.11', tag: '情趣' },
+            { link: 'xiangqingye/发情乳娘美七低胸激凸深沟极其撩人.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye/少女三刀刀三点式内衣湿身诱惑.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/迷情圣诞米线线情趣死库水大秀蜜臀.html', price: '2024.10.11', tag: '性感' },
+
+            { link: 'xiangqingye/情趣女皇秋和柯基抹油爆乳令人上头.html', price: '2024.10.11', tag: '情趣' },
+            { link: 'xiangqingye/金屋娇娘皮皮奶极品爆乳梦幻唯美.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye/抹油少女七月喵子情趣束缚大尺度.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/思春期少女米线线JK制服美腿撩人.html', price: '2024.10.11', tag: '性感' },
+
+
+            { link: 'xiangqingye/人形奶牛周大萌白皙胴体美乳侧漏.html', price: '2024.10.11', tag: '情趣' },
+            { link: 'xiangqingye/唯美天使七月喵子女女双人舔舐爱抚.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye/发情乳娘果儿热辣比基尼浴室调情.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/梦幻睡娘米线线酥胸美臀为您服务.html', price: '2024.10.11', tag: '性感' },
+
+            { link: 'xiangqingye/激萌小妹UU酱奶香味巨乳半裸诱惑.html', price: '2024.10.11', tag: '情趣' },
+            { link: 'xiangqingye/骚动女友七七白丝吊带撅臀暗示你.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye/窈窕女神何嘉颖吊带丝袜极致调情.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/热辣空姐尤妮丝开档肉丝真空露出.html', price: '2024.10.11', tag: '性感' },
+
+            { link: 'xiangqingye/画仙COS小鹿鹿夺命娇体唯美性感.html', price: '2024.10.11', tag: '情趣' },
+            { link: 'xiangqingye/性感小羊米线线闪亮内衣大秀美乳.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye/全民女神艾小青无内黑丝赤身半裸.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/蜜桃成熟时爱丽丝多汁胴体丝滑可口.html', price: '2024.10.11', tag: '性感' },
+
+            { link: 'xiangqingye/少女厨娘依酱完美巨乳不经意侧漏.html', price: '2024.10.11', tag: '情趣' },
+            { link: 'xiangqingye/好色女友陶喜乐白皙胴体激情调情.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye/饥渴娇娘朱可儿露天浴池裸身入镜.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/超萌学生妹美七豪情巨乳专撩宅男.html', price: '2024.10.11', tag: '性感' },
+
+            { link: 'xiangqingye/豪宅女仆软软极品巨乳任人随意摆布.html', price: '2024.10.11', tag: '情趣' },
+            { link: 'xiangqingye/制服美女林子欣黑丝美腿让你满足.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye/气质女神沈梦瑶白皙胴体鲜嫩可口.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/性感女仆鬼畜瑶半身赤裸为您服务.html', price: '2024.10.11', tag: '性感' },
+
+
+            { link: 'xiangqingye/宅男女神米线线兔子女仆黑丝勾魂.html', price: '2024.10.11', tag: '情趣' },
+            { link: 'xiangqingye/觅心天使王雨纯美腿高跟撅臀示爱.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye/微胖小嫩模肉肉蜜汁丰臀令人上头.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/绝美女神杨晨晨肉丝包臀深沟撩人.html', price: '2024.10.11', tag: '性感' },
+
+            { link: 'xiangqingye/热辣女郎糯美子另类情趣捆绑调教.html', price: '2024.10.11', tag: '情趣' },
+            { link: 'xiangqingye/抖娘＆不呆猫的黑白旗袍与丝袜调情.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye/窈窕淑女周于希惹人曲线等待爱抚.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/宝藏学生妹evon校服下的巨乳诱惑.html', price: '2024.10.11', tag: '性感' },
+
+            { link: 'xiangqingye/极品红娘安然蕾丝透明内衣舞动娇体.html', price: '2024.10.11', tag: '情趣' },
+            { link: 'xiangqingye/粉嫩少女绯月樱修身短裙美腿撩人.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye/花花仙子小酥酱白丝高跟美乳侧漏.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/偷心狐妖米线线黑丝情趣揉捏双乳.html', price: '2024.10.11', tag: '性感' },
+
+            { link: 'xiangqingye/绝美COS铁板烧鬼舞禁欲束缚调教.html', price: '2024.10.11', tag: '情趣' },
+            { link: 'xiangqingye/模特合集之巨乳姐妹花的私密调情.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye/性感COS小酥酱美腿深沟可爱可口.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/火辣御姐阿朱喷血黑丝大秀可口美臀.html', price: '2024.10.11', tag: '性感' },
+
+            { link: 'xiangqingye/唯美厨娘米线线透明蕾丝侧漏美乳.html', price: '2024.10.11', tag: '情趣' },
+            { link: 'xiangqingye/运动女孩徐安安肉丝蜜臀触手可得.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye/稚嫩清洁员肉肉蜜汁肉体被迫露出.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/糖果女仆糯美子性感爆乳等你调教.html', price: '2024.10.11', tag: '性感' },
+
+
+            { link: 'xiangqingye/喷血护士米线线情趣吊带为您去火.html', price: '2024.10.11', tag: '情趣' },
+            { link: 'xiangqingye/狐狸小妖软软傲人巨乳独爱尾巴调情.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye/豪情白领尤妮丝极品尤物袒胸露乳.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/万圣恶魔晓美嫣双人缠绵激情一夜.html', price: '2024.10.11', tag: '性感' },
+
+            { link: 'xiangqingye/好色女仆娜露蜜汁丝袜美臀渴求调教.html', price: '2024.10.11', tag: '情趣' },
+            { link: 'xiangqingye/人体盛宴沈梦瑶食物遮羞裸身诱人.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye/极品狐妖抱走莫子傲人美乳夺你魂.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/人间尤物妲己绝色巨乳等你舔舐调教.html', price: '2024.10.11', tag: '情趣' },
+
+            { link: 'xiangqingye/蜜汁少女米线线梦幻睡衣身材尽显.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye/可爱萝莉肉肉酷爱束缚拍照随欲调教.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/羞涩御姐周于希美腿蜜臀露肩诱惑.html', price: '2024.10.11', tag: '性感' },
+
+            { link: 'xiangqingye/风骚新娘阿朱蕾丝吊带令人血脉喷张.html', price: '2024.10.11', tag: '情趣' },
+            { link: 'xiangqingye/嫩汁少女米线线美乳双贴唯美性感.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye/傲人红娘利世情趣美乳超清细节特写.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/尤物女皇娜露短裙高跟不经意露出.html', price: '2024.10.11', tag: '性感' },
+
+            { link: 'xiangqingye/COS少女米线线情窦初开大秀性感美乳.html', price: '2024.10.11', tag: '情趣' },
+            { link: 'xiangqingye/美女管家王雨纯黑丝短裙惨遭调教.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye/绝色人妻安然白皙美乳长腿丝滑顺手.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/仙女妹妹翎柒蕾丝镂空睡衣隐约露出.html', price: '2024.10.11', tag: '情趣' },
+
+
+            { link: 'xiangqingye/迷情御姐杨晨晨透明睡衣大秀美乳.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye/性感代言阿朱性感肉丝美脚夺人魄.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/觅心天使娜露绝色深沟双手托豪乳.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/激萌皮卡丘朱可儿童颜巨乳可爱性感.html', price: '2024.10.11', tag: '情趣' },
+
+            { link: 'xiangqingye/绝色嫩女子肉肉丰腴胴体乳味十足.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/蜜桃小妹米线线蛇臀蜂腰醉酒裸露.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye/cos少女肉肉丝滑娇体可口多汁.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/完美女人王雨纯豪乳深沟若隐若现.html', price: '2024.10.11', tag: '性感' },
+
+
+            { link: 'xiangqingye/萝莉恶魔晓美嫣蜜汁微乳风骚蚀骨.html', price: '2024.10.11', tag: '性感' },
+
+            { link: 'xiangqingye/苦力少女肉肉被迫裸身遭受捆绑调教.html', price: '2024.10.11', tag: '情趣' },
+            { link: 'xiangqingye/模特合集之玉体女同相互舔舐爱抚.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye/嗜血小恶魔米线线三点胶衣尺度大胆.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/蕾姆女仆肉肉童颜巨乳大尺度暴露.html', price: '2024.10.11', tag: '性感' },
+
+            { link: 'xiangqingye/绝色娇娘尤妮丝丰满蜜臀娇喘露出.html', price: '2024.10.11', tag: '情趣' },
+            { link: 'xiangqingye/蜜汁奶娘利世惹火马甲线隐约露美乳.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye/奶牛女仆晓美嫣羞涩微乳奶香四溢.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/激萌女友周大萌白皙巨乳撑爆吊带裙.html', price: '2024.10.11', tag: '性感' },
+
+            { link: 'xiangqingye/风情御姐优优美腿高跟裸露诱惑你.html', price: '2024.10.11', tag: '情趣' },
+            { link: 'xiangqingye/邻家小妹抱走莫子蕾丝胶衣体态撩人.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye/萌萌绵羊蠢沫沫丝袜吊带露裆诱惑.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/好色女仆利世与不呆猫的调教爱抚.html', price: '2024.10.11', tag: '性感' },
+
+            { link: 'xiangqingye/蜜汁女郎尤妮丝妖娆曲线爆乳弹出.html', price: '2024.10.11', tag: '情趣' },
+            { link: 'xiangqingye/丰满女人软软傲人巨乳丝滑香甜可口.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye/宅男女神米线线开档丝袜大秀美乳.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/丰腴美人娜露豪情巨乳娇喘中露出.html', price: '2024.10.11', tag: '性感' },
+
+
+            { link: 'xiangqingye/绝色小恶魔利世黑丝网袜爆乳勾魂.html', price: '2024.10.11', tag: '情趣' },
+            { link: 'xiangqingye/私房爱妻徐安安黑丝高跟体香四溢.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye/邻家小妹米线线情趣套装肆意裸露.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/绝色警花王羽杉白皙美腿睡姿撩人.html', price: '2024.10.11', tag: '性感' },
+
+            { link: 'xiangqingye/情趣萌妹蜜汁猫裘丝滑巨乳美腿勾魂.html', price: '2024.10.11', tag: '情趣' },
+            { link: 'xiangqingye/激萌学生妹魔物喵黑丝制服野外露出.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye/多情美女艺轩黑丝制服教鞭伺候你.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/夺命空姐王雨纯肉丝高跟蜜臀飘香.html', price: '2024.10.11', tag: '性感' },
+
+            { link: 'xiangqingye/健身女孩周于希紧身运动服隐约露乳.html', price: '2024.10.11', tag: '情趣' },
+            { link: 'xiangqingye/蜜汁少女米线线透明睡衣曲线撩人.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye/闷骚野兽柴婉艺无内黑丝大秀美臀.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/勾魂小妖叉子宝宝极品美腿很想舔舐.html', price: '2024.10.11', tag: '性感' },
+
+            { link: 'xiangqingye/夺命狐妖柏原睛漆皮内衣风骚勾魂.html', price: '2024.10.11', tag: '情趣' },
+            { link: 'xiangqingye/全民女神周妍希蛇形曲线大秀长腿.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye/贴身爱妻娜露傲人巨乳娇喘中露出.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/私房美女小鱿鱼蕾丝情趣深夜调情.html', price: '2024.10.11', tag: '性感' },
+
+            { link: 'xiangqingye/激萌迷妹米线线蕾丝情趣体味十足.html', price: '2024.10.11', tag: '情趣' },
+            { link: 'xiangqingye/风骚秘书王雨纯真空裸露撅臀示爱.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye/邻家小妹白银八一奶味酥胸灰丝勾魂.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/倾城容颜叉子宝宝情趣护士极品调教.html', price: '2024.10.11', tag: '性感' },
+
+
+            { link: 'xiangqingye/热辣空姐徐安安黑丝高跟制服诱惑.html', price: '2024.10.11', tag: '情趣' },
+            { link: 'xiangqingye/清秀御姐玉兔miki包臀黑丝霸气凌人.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye/少女春梦尤猫醒醒蕾丝内衣娇体稚嫩.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/气质御姐阿朱包臀黑丝翘臀诱惑.html', price: '2024.10.11', tag: '性感' },
+
+            { link: 'xiangqingye/激情萌妹米线线梦幻蕾丝大秀美乳.html', price: '2024.10.11', tag: '情趣' },
+            { link: 'xiangqingye/妖娆人妻瑶瑶美乳酥胸奶味伴随体香.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye/邻家小妹朱可儿连体丝袜性感露出.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/蜜汁少女仓井优香稚嫩胴体美姿蚀骨.html', price: '2024.10.11', tag: '性感' },
+
+            { link: 'xiangqingye/完美女人王雨纯极品爆乳若隐若现.html', price: '2024.10.11', tag: '情趣' },
+            { link: 'xiangqingye/丰满人妻洋洋情趣内衣尽显诱惑体态.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye/娇羞御姐徐安安肉丝牛仔美腿顺滑.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/裸色天使周于希蜜汁美臀疯狂勾引.html', price: '2024.10.11', tag: '性感' },
+
+            { link: 'xiangqingye/极品御姐顾乔楠绝色美乳白皙顺滑.html', price: '2024.10.11', tag: '情趣' },
+            { link: 'xiangqingye/专属服务陆萱萱白皙胴体奶味十足.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye/贴心人妻久久蕾丝情趣脱衣诱惑你.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/夹心小女仆妲己丝滑巨乳隐约露出.html', price: '2024.10.11', tag: '性感' },
+
+            { link: 'xiangqingye/完美体态梦心月吊带黑丝手遮美乳.html', price: '2024.10.11', tag: '情趣' },
+            { link: 'xiangqingye/宅男女神艺轩黑丝玉足眼神暗示.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye/绒绒小兔杨晨晨透明蕾丝明艳欲滴.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/宅男女神小热巴肉丝美脚长腿撩人.html', price: '2024.10.11', tag: '性感' },
+
+
+            { link: 'xiangqingye1/健身少女周于希紧身运动装身材尽显 - 妹妹图 - 高清极品美女图集_性感美女_美女壁纸.html', price: '2024.10.11', tag: '情趣' },
+            { link: 'xiangqingye1/极品舞娘王雨纯肉丝美脚巨乳多汁 - 妹妹图 - 高清极品美女图集_性感美女_美女壁纸.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye1/豪情女皇尤妮丝蜜汁爆乳若隐若现 - 妹妹图 - 高清极品美女图集_性感美女_美女壁纸.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye1/发情夜猫贾诗晗情趣黑丝尾巴调教 - 妹妹图 - 高清极品美女图集_性感美女_美女壁纸.html', price: '2024.10.11', tag: '性感' },
+
+            { link: 'xiangqingye1/乖巧女仆傲娇萌萌香弹巨乳制服诱惑 - 妹妹图 - 高清极品美女图集_性感美女_美女壁纸.html', price: '2024.10.11', tag: '情趣' },
+            { link: 'xiangqingye1/主治医生阿朱白丝吊带病房性感露出 - 妹妹图 - 高清极品美女图集_性感美女_美女壁纸.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye1/傲人乳娘糯美子膨胀双峰唯美可爱 - 妹妹图 - 高清极品美女图集_性感美女_美女壁纸.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye1/性感服务安然白皙胴体大秀小蛮腰 - 妹妹图 - 高清极品美女图集_性感美女_美女壁纸.html', price: '2024.10.11', tag: '性感' },
+
+            { link: 'xiangqingye1/爆汁娇娘朱可儿巨乳比基尼撩人至极 - 妹妹图 - 高清极品美女图集_性感美女_美女壁纸.html', price: '2024.10.11', tag: '情趣' },
+            { link: 'xiangqingye1/丰腴嫩模娜露傲人巨乳丝滑长腿勾魂 - 妹妹图 - 高清极品美女图集_性感美女_美女壁纸.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye1/樱桃小妹王雨纯粉嫩美乳娇羞欲滴 - 妹妹图 - 高清极品美女图集_性感美女_美女壁纸.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye1/风骚秘书梦心月蜜汁美臀深沟撩人 - 妹妹图 - 高清极品美女图集_性感美女_美女壁纸.html', price: '2024.10.11', tag: '性感' },
+
+            { link: 'xiangqingye/.html', price: '2024.10.11', tag: '情趣' },
+            { link: 'xiangqingye/.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye/.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/.html', price: '2024.10.11', tag: '性感' },
+
+            { link: 'xiangqingye/.html', price: '2024.10.11', tag: '情趣' },
+            { link: 'xiangqingye/.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye/.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/.html', price: '2024.10.11', tag: '性感' },
+
+
+            { link: 'xiangqingye/.html', price: '2024.10.11', tag: '情趣' },
+            { link: 'xiangqingye/.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye/.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/.html', price: '2024.10.11', tag: '性感' },
+
+            { link: 'xiangqingye/.html', price: '2024.10.11', tag: '情趣' },
+            { link: 'xiangqingye/.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye/.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/.html', price: '2024.10.11', tag: '性感' },
+
+            { link: 'xiangqingye/.html', price: '2024.10.11', tag: '情趣' },
+            { link: 'xiangqingye/.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye/.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/.html', price: '2024.10.11', tag: '性感' },
+
+            { link: 'xiangqingye/.html', price: '2024.10.11', tag: '情趣' },
+            { link: 'xiangqingye/.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye/.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/.html', price: '2024.10.11', tag: '性感' },
+
+            { link: 'xiangqingye/.html', price: '2024.10.11', tag: '情趣' },
+            { link: 'xiangqingye/.html', price: '2024.10.11', tag: '巨乳' },
+            { link: 'xiangqingye/.html', price: '2024.10.11', tag: '性感' },
+            { link: 'xiangqingye/.html', price: '2024.10.11', tag: '性感' },
+
+
+
+            // 继续添加链接，价格和标签
+        ];
+
+        // 获取所有标签按钮
+        const tagButtons = document.querySelectorAll('.tag-button');
+
+        // 添加标签按钮点击事件
+        tagButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // 移除所有按钮的active类
+                tagButtons.forEach(btn => btn.classList.remove('active'));
+                // 添加active类到当前点击的按钮
+                button.classList.add('active');
+
+                const selectedTag = button.getAttribute('data-tag');
+                loadImages(selectedTag); // 传递选中的标签
+            });
+        });
+
+        function searchLinks() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = ''; // 清空之前的结果
+
+            // 如果输入为空，直接返回，不显示任何结果
+            if (input === '') {
+                return;
+            }
+
+            links.forEach(linkItem => {
+                // 提取标题，即去掉 'youxixiangqing/' 和 '.html'
+                const title = linkItem.link.replace('xiangqingye/', '').replace('xiangqingye1/', '').replace(' - 妹妹图 - 高清极品美女图集_性感美女_美女壁纸', '').replace('.html', '');
+
+                if (title.toLowerCase().includes(input)) {
+                    const div = document.createElement('div');
+                    const link = document.createElement('a');
+                    link.href = linkItem.link; // 连接到原始链接
+                    link.target = '_blank'; // 在新窗口打开链接
+                    link.textContent = title; // 显示提取后的标题
+                    div.appendChild(link); // 将链接添加到 div
+                    resultDiv.appendChild(div); // 将 div 添加到结果区域
+                }
+            });
+        }
+
+        // 修改loadImages函数
+        function loadImages(selectedTag = 'all') {
+            imageGallery.innerHTML = ''; // 清空图片容器
+
+            const startIndex = (currentPage - 1) * imagesPerPage;
+            const endIndex = Math.min(startIndex + imagesPerPage, links.length);
+
+            for (let i = startIndex; i < endIndex; i++) {
+                if (selectedTag !== 'all' && links[i].tag !== selectedTag) {
+                    continue; // 如果标签不匹配，则跳过
+                }
+
+                const card = document.createElement('div');
+                card.classList.add('card');
+
+                const link = document.createElement('a');
+                link.href = links[i].link; // 设置链接
+                link.target = '_blank'; // 在新窗口打开链接
+                link.style.textDecoration = 'none'; // 清除链接下划线
+
+                const img = document.createElement('img');
+                img.src = `${imageFolderPath}${i + 1}.jpg`; // 根据图片路径
+
+                const title = links[i].link.replace('xiangqingye/', '').replace('xiangqingye1/', '').replace(' - 妹妹图 - 高清极品美女图集_性感美女_美女壁纸', '').replace('.html', '');
+                const titleElement = document.createElement('h3');
+                titleElement.textContent = title;
+                titleElement.classList.add('title'); // 添加类名以应用样式限制
+
+                const priceElement = document.createElement('p');
+                priceElement.textContent = links[i].price;
+
+                link.appendChild(img);
+                link.appendChild(titleElement);
+                link.appendChild(priceElement);
+                card.appendChild(link); // 将链接加入卡片
+
+                imageGallery.appendChild(card); // 添加卡片到画廊
+            }
+
+
+            // 在图片加载后应用持续缩放动画
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card) => {
+                card.style.animation = `continuousZoom 2s ease-in-out infinite`; // 应用缩放动画
+            });
+        }
+
+        // 在初始化时加载所有图片
+
+        loadImages(); // 初始化加载图片
+        updateButtons(); // 初始化按钮状态
+
+        // 定义广告图片数据，三组图片
+        const adImages = [
+            ['image/广告图/1.jpg', 'image/广告图/5.jpg', 'image/广告图/6.jpg'], // 第一组
+            ['image/广告图/48.jpg', 'image/广告图/49.jpg', 'image/广告图/51.jpg'], // 第二组
+            ['image/广告图/52.jpg', 'image/广告图/7.jpg', 'image/广告图/9.jpg']  // 第三组
+        ];
+
+        // 定义广告链接
+        const adLinks = [
+            ['https://example.com/ad1', 'https://example.com/ad2', 'https://example.com/ad3'],
+            ['https://example.com/ad4', 'https://example.com/ad5', 'https://example.com/ad6'],
+            ['https://example.com/ad7', 'https://example.com/ad8', 'https://example.com/ad9']
+        ];
+
+        let currentIndex = 0; // 当前显示的图片索引
+
+        // 获取广告轮播容器
+        const slideshow = document.getElementById('ad-slideshow');
+
+        function loadAds() {
+            // 清空广告轮播容器
+            slideshow.innerHTML = '';
+
+            // 动态生成广告图片，每次显示三组的相应索引的图片
+            for (let i = 0; i < adImages.length; i++) {
+                const imgElement = document.createElement('img');
+                imgElement.src = adImages[i][currentIndex]; // 获取当前组的当前索引的图片
+
+                const linkElement = document.createElement('a');
+                linkElement.href = adLinks[i][currentIndex]; // 设置链接
+                linkElement.target = '_blank'; // 在新窗口打开
+                linkElement.appendChild(imgElement);
+
+                slideshow.appendChild(linkElement); // 添加链接及图片到广告轮播容器
+            }
+
+            // 更新索引
+            currentIndex = (currentIndex + 1) % adImages[0].length; // 循环显示每组的图片
+        }
+
+        // 每3秒切换一次广告图片
+        setInterval(loadAds, 3000);
+
+        // 初始化加载广告
+        loadAds();
+
+    </script>
+</body>
+
+</html>

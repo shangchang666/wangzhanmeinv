@@ -1,0 +1,142 @@
+ /* 基本样式 */
+ html,
+ body {
+     height: 100%;
+     width: 100%;
+     margin: 0;
+     font-family: Arial, sans-serif;
+     background-color: #000000;
+ }
+
+ h1 {
+     color: #323232;
+     margin-top: 10px;
+ }
+
+ .container {
+     width: 100%;
+     height: 100%;
+     overflow-x: hidden;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+ }
+
+ .main-image img {
+     max-width: 100%;
+     height: auto;
+     /* 保持比例 */
+ }
+
+ .ad-container {
+     display: flex;
+     justify-content: space-between;
+     width: 100%;
+     max-width: 900px;
+     padding: 1px 1px 1px 1px;
+     margin-top: 20px;
+     background-color: #f97dd8;
+     /* 设置广告背景色 */
+ }
+
+ .ad-item {
+     width: 32%;
+     position: relative;
+ }
+
+ .ad-slideshow img {
+     width: 100%;
+     height: auto;
+     display: none;
+ }
+
+ .ad-slideshow img.active {
+     display: block;
+ }
+
+ .image-container {
+     display: grid;
+     grid-template-columns: repeat(2, 1fr);
+     gap: 10px;
+     width: 100%;
+     padding: 10px;
+     max-width: 900px;
+     /* 限制最大宽度 */
+ }
+
+ .image-item img {
+     width: 100%;
+     height: auto;
+     /* 保持比例 */
+ }
+
+ .password-container {
+     margin: 20px;
+ }
+
+ .password-section {
+     display: flex;
+     align-items: center;
+     /* 设置为水平排列 */
+     gap: 20px;
+ }
+
+ #passwordMessage {
+     color: red;
+     margin-top: 10px;
+ }
+
+ button {
+     padding: 8px 12px;
+     background-color: #4CAF50;
+     color: white;
+     border: none;
+     cursor: pointer;
+     border-radius: 4px;
+ }
+
+ button:hover {
+     background-color: #45a049;
+ }
+
+ .contact-btn {
+     background-color: #f44336;
+     text-decoration: none;
+     color: white;
+     display: inline-block;
+     padding: 8px 12px;
+     border-radius: 4px;
+ }
+
+ .contact-btn:hover {
+     background-color: #d32f2f;
+ }
+
+ .ad-description {
+     text-align: center;
+     font-size: 18px;
+     color: #323232;
+     margin-top: 12px;
+     /* 设置广告描述字体大小 */
+     padding: 10px;
+     background-color: #ffffff;
+     max-width: 900px;
+     width: 100%;
+     /* 限制最大宽度 */
+     border-radius: 4px;
+     /* 圆角 */
+     box-shadow: 0px 0px 10px #888888;
+     /* 阴影 */
+     font-family: 仿宋, sans-serif;
+     /* 字体 */
+     font-weight: bold;
+     /* 加粗 */
+     text-indent: 2em;
+     /* 首行缩进 */
+     text-align: justify;
+     /* 两端对齐 */
+ }
+
+ .yanse {
+     color: rgb(219, 12, 122)
+ }

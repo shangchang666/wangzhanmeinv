@@ -1,0 +1,229 @@
+html,
+body {
+    font-family: '仿宋', sans-serif;
+    /* 设置字体 */
+    font-size: 15px;
+    /* 设置字体大小 */
+
+
+    margin: 0;
+    padding: 0;
+    background-color: #000000;
+    overflow-x: hidden;
+    /* 隐藏水平滚动条 */
+    display: flex;
+    flex-direction: column;
+    /* 设置主轴方向 */
+    min-height: 100vh;
+    /* 宽度自适应 */
+    box-sizing: border-box;
+
+
+}
+
+header {
+    background-color: #9912d3;
+    /* 淡蓝色 */
+    padding: 1px;
+    text-align: center;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    /* 加粗 */
+}
+
+.search-container {
+    margin-top: 10px;
+}
+
+.search-container input {
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+.search-container button {
+    padding: 10px;
+    background-color: #4a90e2;
+    /* 淡蓝色 */
+    color: white;
+    border: none;
+}
+
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    /* 确保容器宽度为100% */
+}
+
+.card {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 10px;
+    padding: 15px;
+    width: calc(20% - 6px);
+    /* 四个卡片每行 */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.card h3 {
+    display: -webkit-box;
+    /* 使用弹性盒子 */
+    -webkit-box-orient: vertical;
+    /* 竖直排列 */
+    -webkit-line-clamp: 3;
+    /* 限制显示三行 */
+    overflow: hidden;
+    /* 隐藏超出内容 */
+    text-overflow: ellipsis;
+    /* 省略号处理 */
+    color: black;
+    /* 设置字体颜色 */
+}
+
+
+
+.card img {
+    max-width: 100%;
+    height: auto;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.pagination button {
+    margin: 0 10px;
+    padding: 10px 15px;
+    background-color: #3b7ab4;
+    /* 使用淡蓝色 */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.pagination button:disabled {
+    background-color: #575757;
+    /* 灰色表示禁用 */
+    cursor: not-allowed;
+}
+
+footer {
+    /* 底部 */
+    background-color: #c411ec;
+    /* 浅灰色 */
+    color: white;
+    text-align: center;
+    padding: 15px;
+    position: relative;
+    /* 改为相对定位 */
+    margin-top: 20px;
+    /* 增加顶部间距 */
+    width: 100%;
+    font-size: 13px;
+    /* 字体 */
+}
+
+.announcement-container {
+    background-color: #000000;
+    /* 浅粉色 */
+    color: rgb(253, 246, 248);
+    font-weight: bold;
+    /* 加粗 */
+    overflow: hidden;
+    height: 100px;
+    /* 根据需要调整高度 */
+    position: relative;
+    /* 改为相对定位 */
+    width: 100%;
+    /* 宽度为100% */
+}
+
+.announcement {
+    display: inline-block;
+    /* 改为块级元素以支持水平排列 */
+    white-space: nowrap;
+    /* 不换行 */
+    position: absolute;
+    /* 使用绝对定位 */
+    right: 0;
+    /* 从右侧开始 */
+    animation: scroll 30s linear infinite;
+    /* 控制滚动动画 */
+    /* width: 100%; */
+    /* 宽度为100% */
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateX(100%);
+        /* 从右侧外部开始 */
+    }
+
+    100% {
+        transform: translateX(-800%);
+        /* 滚动到左侧外部 */
+    }
+}
+
+@media (max-width: 768px) {
+
+    /* 适应手机端 */
+    .card {
+        width: calc(60% - 20px);
+        /* 每行两列，减去间距 */
+    }
+}
+
+@media (max-width: 576px) {
+
+    /* 适应手机端 */
+    .card {
+        width: calc(40% - 20px);
+        /* 每行两列，减去间距 */
+    }
+}
+
+.footer-music {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    /* 设置间距 */
+    margin-bottom: 5px;
+    /* 增加底部间距 */
+}
+
+.footer-music button {
+    background-color: #0b78f5;
+    /* 按钮颜色 */
+    color: white;
+    padding: 6px 12px;
+    /* 按钮大小 */
+    border: none;
+    border-radius: 5px;
+    /* 圆角 */
+    cursor: pointer;
+}
+
+.footer-music button:hover {
+    background-color: #d611b9;
+}
